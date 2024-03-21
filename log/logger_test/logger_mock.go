@@ -27,3 +27,8 @@ func (l *LoggerMock) Debugf(format string, v ...any) {
 	inner := fmt.Sprintf(format, v...)
 	l.Buf = append(l.Buf, fmt.Sprintf("debug: %s", inner))
 }
+
+func (l *LoggerMock) Printf(format string, v ...any) {
+	inner := fmt.Sprintf(format, v...)
+	l.Buf = append(l.Buf, fmt.Sprintf("print: %s", inner))
+}

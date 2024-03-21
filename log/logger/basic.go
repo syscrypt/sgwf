@@ -5,4 +5,5 @@ type Logger interface {
 	Warnf(format string, v ...any)
 	Errorf(format string, v ...any)
 	Debugf(format string, v ...any)
+	Printf(format string, v ...any)
 }
