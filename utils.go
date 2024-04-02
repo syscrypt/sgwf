@@ -1,12 +1,9 @@
 package sgwf
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
-	"reflect"
-	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -34,55 +31,11 @@ func CheckVars(r *http.Request, vars ...string) error {
 	return nil
 }
 
-func PackRequestPathVariables(r *http.Request, dest interface{}) error {
-	values := mux.Vars(r)
-
-	if values == nil {
-		return ErrValueNotFound
+func RequestVarsArrayList(r *http.Request) map[string][]string {
+	vars := mux.Vars(r)
+	ret := make(map[string][]string, len(vars))
+	for k, v := range vars {
+		ret[k] = []string{v}
 	}
-
-	if reflect.TypeOf(dest).Kind() != reflect.Pointer {
-		return ErrNonPointerType
-	}
-
-	types, err := getStructTypes(reflect.ValueOf(dest).Elem().Interface())
-	if err != nil {
-		return err
-	}
-
-	result := []string{}
-	for k, v := range values {
-		if types[k] != "string" {
-			result = append(result, fmt.Sprintf("\"%s\": %s", k, v))
-		} else {
-			result = append(result, fmt.Sprintf("\"%s\": \"%s\"", k, v))
-		}
-	}
-
-	resultStr := strings.Join(result, ",")
-	resultStr = fmt.Sprintf("{%s}", resultStr)
-
-	return json.Unmarshal([]byte(resultStr), dest)
-}
-
-func getStructTypes(i interface{}) (map[string]string, error) {
-	val := reflect.ValueOf(i)
-	typ := val.Type()
-	ret := make(map[string]string)
-
-	if val.Kind() != reflect.Struct {
-		return nil, ErrNoStructParam
-	}
-
-	for i := 0; i < val.NumField(); i++ {
-		fieldType := typ.Field(i)
-		fieldJsonName := fieldType.Tag.Get("json")
-		if fieldJsonName == "" || len(strings.Split(fieldJsonName, ",")) > 1 {
-			return nil, ErrWrongJsonTag
-		}
-
-		ret[fieldJsonName] = fieldType.Type.Name()
-	}
-
-	return ret, nil
+	return ret
 }
