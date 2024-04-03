@@ -40,14 +40,22 @@ func (rw *DefaultResponseWrapper) writeJsonResponse(w http.ResponseWriter, statu
 		return
 	}
 
-	content, err := json.Marshal(body)
-	if err != nil {
-		rw.logErr(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+	var content []byte
+	var err error
+
+	if b, ok := body.([]byte); ok {
+		content = b
+	} else {
+		content, err = json.Marshal(body)
+		if err != nil {
+			rw.logErr(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 
 	if ln, err := w.Write(content); err != nil {

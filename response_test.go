@@ -52,6 +52,13 @@ var (
 			Error: errors.New("hidden error"),
 		}
 	}
+
+	byteBodyRespFunc = func(w http.ResponseWriter, r *http.Request) *HttpResponse {
+		return &HttpResponse{
+			StatusCode: http.StatusOK,
+			Body:       []byte{0xca, 0xfe, 0x13, 0x37},
+		}
+	}
 )
 
 func TestNilResponse(t *testing.T) {
@@ -139,4 +146,23 @@ func TestErrorBodyResponse(t *testing.T) {
 	assert.Equal(t, "error: hidden error", lg.Buf[0])
 	assert.Equal(t, rr.Result().StatusCode, http.StatusOK)
 	assert.Equal(t, string(body), "{\"message\":\"this error is propagated to the client\"}")
+}
+
+func TestByteBodyResponse(t *testing.T) {
+	responseWrapper := NewDefaultResponseWrapper()
+	lg := &logger_test.LoggerMock{}
+	responseWrapper.SetLogger(lg)
+
+	req, _ := http.NewRequest(http.MethodGet, "/test", nil)
+	rr := httptest.NewRecorder()
+	f := responseWrapper.Wrap(byteBodyRespFunc)
+	f(rr, req)
+
+	defer rr.Result().Body.Close()
+	body, err := io.ReadAll(rr.Result().Body)
+	assert.NoError(t, err)
+
+	assert.Equal(t, 0, len(lg.Buf))
+	assert.Equal(t, rr.Result().StatusCode, http.StatusOK)
+	assert.EqualValues(t, body, []byte{0xca, 0xfe, 0x13, 0x37})
 }
