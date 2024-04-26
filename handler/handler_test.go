@@ -29,13 +29,13 @@ func TestLogMiddleware(t *testing.T) {
 	req, _ := http.NewRequest(http.MethodGet, "/test", nil)
 	handler.ServeHTTP(rr, req)
 	assert.Equal(t, 1, len(lg.Buf))
-	assert.Equal(t, "info: new http GET request /test", lg.Buf[0])
+	assert.Equal(t, "info: new http GET request /test from remote addr ", lg.Buf[0])
 	lg.Buf = []string{}
 
 	assert.Equal(t, 0, len(lg.Buf))
 	req, _ = http.NewRequest(http.MethodPost, "/test?value=10", nil)
 	handler.ServeHTTP(rr, req)
 	assert.Equal(t, 1, len(lg.Buf))
-	assert.Equal(t, "info: new http POST request /test?value=10", lg.Buf[0])
+	assert.Equal(t, "info: new http POST request /test?value=10 from remote addr ", lg.Buf[0])
 	lg.Buf = []string{}
 }

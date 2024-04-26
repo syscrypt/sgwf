@@ -70,7 +70,6 @@ func (rw *DefaultResponseWrapper) Wrap(f func(w http.ResponseWriter, r *http.Req
 		resp := f(w, r)
 
 		if resp == nil {
-			w.WriteHeader(http.StatusOK)
 			return
 		}
 
