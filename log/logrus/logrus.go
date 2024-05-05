@@ -5,8 +5,41 @@ import (
 
 	"github.com/syscrypt/sgwf/log/logger"
 
+	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )
+
+func TextFormatter() *logrus.TextFormatter {
+	return &log.TextFormatter{}
+}
+
+func JsonFormatter() *logrus.JSONFormatter {
+	return &log.JSONFormatter{}
+}
+
+func PanicLevel() log.Level {
+	return log.PanicLevel
+}
+
+func ErrorLevel() log.Level {
+	return log.ErrorLevel
+}
+
+func WarnLevel() log.Level {
+	return log.WarnLevel
+}
+
+func InfoLevel() log.Level {
+	return log.InfoLevel
+}
+
+func DebugLevel() log.Level {
+	return log.DebugLevel
+}
+
+func TraceLevel() log.Level {
+	return log.TraceLevel
+}
 
 type logrusLogEntry struct {
 	entry *log.Entry
