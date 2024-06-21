@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/syscrypt/sgwf/extra"
 	"github.com/syscrypt/sgwf/log/basic"
 )
 
@@ -27,7 +28,7 @@ func (rw *DefaultResponseWrapper) logErr(err error) {
 		return
 	}
 
-	if rw.FieldLogger != nil {
+	if !extra.IsNil(rw.FieldLogger) {
 		rw.FieldLogger.Error(err)
 		return
 	}

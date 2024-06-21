@@ -5,6 +5,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/syscrypt/sgwf/extra"
 	"github.com/syscrypt/sgwf/log/logger"
 )
 
@@ -25,7 +26,7 @@ func NewLog() *LogImpl {
 }
 
 func (l *LogImpl) Infof(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Infof(format, v...)
 		return
 	}
@@ -33,7 +34,7 @@ func (l *LogImpl) Infof(format string, v ...any) {
 }
 
 func (l *LogImpl) Warnf(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Warnf(format, v...)
 		return
 	}
@@ -41,7 +42,7 @@ func (l *LogImpl) Warnf(format string, v ...any) {
 }
 
 func (l *LogImpl) Errorf(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Errorf(format, v...)
 		return
 	}
@@ -49,7 +50,7 @@ func (l *LogImpl) Errorf(format string, v ...any) {
 }
 
 func (l *LogImpl) Debugf(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Debugf(format, v...)
 		return
 	}
@@ -57,7 +58,7 @@ func (l *LogImpl) Debugf(format string, v ...any) {
 }
 
 func (l *LogImpl) Printf(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Infof(format, v...)
 		return
 	}
@@ -65,7 +66,7 @@ func (l *LogImpl) Printf(format string, v ...any) {
 }
 
 func (l *LogImpl) Warningf(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Warningf(format, v...)
 		return
 	}
@@ -73,7 +74,7 @@ func (l *LogImpl) Warningf(format string, v ...any) {
 }
 
 func (l *LogImpl) Fatalf(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Fatalf(format, v...)
 		return
 	}
@@ -81,7 +82,7 @@ func (l *LogImpl) Fatalf(format string, v ...any) {
 }
 
 func (l *LogImpl) Panicf(format string, v ...any) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Panicf(format, v...)
 		return
 	}
@@ -89,7 +90,7 @@ func (l *LogImpl) Panicf(format string, v ...any) {
 }
 
 func (l *LogImpl) Info(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Info(args...)
 		return
 	}
@@ -97,39 +98,39 @@ func (l *LogImpl) Info(args ...interface{}) {
 }
 
 func (l *LogImpl) Warn(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Warn(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Warn(args...)
 		return
 	}
 	l.Logger.Warnf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Error(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Error(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Error(args...)
 		return
 	}
 	l.Logger.Errorf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Debug(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Debug(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Debug(args...)
 		return
 	}
 	l.Logger.Debugf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Print(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Print(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Print(args...)
 		return
 	}
 	l.Logger.Printf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Warning(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Warning(args...)
 		return
 	}
@@ -137,7 +138,7 @@ func (l *LogImpl) Warning(args ...interface{}) {
 }
 
 func (l *LogImpl) Fatal(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Fatal(args...)
 		return
 	}
@@ -145,7 +146,7 @@ func (l *LogImpl) Fatal(args ...interface{}) {
 }
 
 func (l *LogImpl) Panic(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Panic(args...)
 		return
 	}
@@ -153,7 +154,7 @@ func (l *LogImpl) Panic(args ...interface{}) {
 }
 
 func (l *LogImpl) Infoln(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Infoln(args...)
 		return
 	}
@@ -161,39 +162,39 @@ func (l *LogImpl) Infoln(args ...interface{}) {
 }
 
 func (l *LogImpl) Warnln(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Warnln(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Warnln(args...)
 		return
 	}
 	l.Logger.Warnf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Errorln(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Errorln(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Errorln(args...)
 		return
 	}
 	l.Logger.Errorf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Debugln(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Debugln(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Debugln(args...)
 		return
 	}
 	l.Logger.Debugf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Println(args ...interface{}) {
-	if l.FieldLogger != nil {
-		l.FieldLogger.Println(args)
+	if !extra.IsNil(l.FieldLogger) {
+		l.FieldLogger.Println(args...)
 		return
 	}
 	l.Logger.Printf(buildStringFromArgs(args))
 }
 
 func (l *LogImpl) Warningln(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Warningln(args...)
 		return
 	}
@@ -201,7 +202,7 @@ func (l *LogImpl) Warningln(args ...interface{}) {
 }
 
 func (l *LogImpl) Fatalln(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Fatalln(args...)
 		return
 	}
@@ -209,7 +210,7 @@ func (l *LogImpl) Fatalln(args ...interface{}) {
 }
 
 func (l *LogImpl) Panicln(args ...interface{}) {
-	if l.FieldLogger != nil {
+	if !extra.IsNil(l.FieldLogger) {
 		l.FieldLogger.Panicln(args...)
 		return
 	}
@@ -217,34 +218,43 @@ func (l *LogImpl) Panicln(args ...interface{}) {
 }
 
 func (l *LogImpl) SetOutput(writer io.Writer) {
-	if l.FieldLogger == nil {
+	if extra.IsNil(l.FieldLogger) {
 		return
 	}
 	l.FieldLogger.SetOutput(writer)
 }
 
 func (l *LogImpl) WithField(key string, value interface{}) logger.FieldLogger {
-	if l.FieldLogger == nil {
+	if extra.IsNil(l.FieldLogger) {
 		return l
 	}
 
-	return l.FieldLogger.WithField(key, value)
+	return &LogImpl{
+		Logger:      l.Logger,
+		FieldLogger: l.FieldLogger.WithField(key, value),
+	}
 }
 
 func (l *LogImpl) WithFields(fields logger.Fields) logger.FieldLogger {
-	if l.FieldLogger == nil {
+	if extra.IsNil(l.FieldLogger) {
 		return l
 	}
 
-	return l.FieldLogger.WithFields(fields)
+	return &LogImpl{
+		Logger:      l.Logger,
+		FieldLogger: l.FieldLogger.WithFields(fields),
+	}
 }
 
 func (l *LogImpl) WithError(err error) logger.FieldLogger {
-	if l.FieldLogger == nil {
+	if extra.IsNil(l.FieldLogger) {
 		return l
 	}
 
-	return l.FieldLogger.WithError(err)
+	return &LogImpl{
+		Logger:      l.Logger,
+		FieldLogger: l.FieldLogger.WithError(err),
+	}
 }
 
 func (l *LogImpl) SetLogger(lg logger.Logger) {
