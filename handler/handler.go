@@ -13,6 +13,11 @@ type Controller interface {
 	ServeHTTP(w http.ResponseWriter, r *http.Request)
 }
 
+type Route struct {
+	RawPath string
+	Methods []string
+}
+
 type Handler struct {
 	*basic.LogImpl
 	Router *mux.Router
@@ -26,9 +31,17 @@ func New() *Handler {
 		LogImpl: basic.NewLog(),
 	}
 
-	h.Router.Use(h.LogMiddleware)
-
 	return h
+}
+
+func (h *Handler) Use(mwf ...mux.MiddlewareFunc) {
+	h.Router.Use(mwf...)
+}
+
+func (h *Handler) SetupMultiPathController(routes []Route, c Controller) {
+	for _, r := range routes {
+		h.Router.Handle(r.RawPath, c).Methods(r.Methods...)
+	}
 }
 
 func (h *Handler) SetupRoutes(c map[string]Controller) {

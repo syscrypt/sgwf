@@ -8,6 +8,21 @@ type HttpResponse struct {
 	Error      error
 }
 
+type Message struct {
+	Message string `json:"message,omitempty"`
+	Error   string `json:"error,omitempty"`
+}
+
+func NewErrorMessage(status int, err error, msg string) *HttpResponse {
+	return &HttpResponse{
+		StatusCode: status,
+		Body: &Message{
+			Error: msg,
+		},
+		Error: err,
+	}
+}
+
 func NewOkResponse() *HttpResponse {
 	return &HttpResponse{
 		StatusCode: http.StatusOK,
@@ -21,6 +36,14 @@ func NewOkBodyResponse(body interface{}) *HttpResponse {
 		StatusCode: http.StatusOK,
 		Body:       body,
 		Error:      nil,
+	}
+}
+
+func NewErrorResponse(status int, err error) *HttpResponse {
+	return &HttpResponse{
+		StatusCode: status,
+		Body:       nil,
+		Error:      err,
 	}
 }
 
